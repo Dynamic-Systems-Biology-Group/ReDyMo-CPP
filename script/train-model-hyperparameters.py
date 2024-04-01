@@ -147,7 +147,7 @@ def objective(trial):
     command_arr[command_arr.index('organism_placeholder')] = params['organism']
     print(command_arr)
 
-    trial.set_user_attr('hostname', os.environ['HOSTNAME'])
+    trial.set_user_attr('hostname', os.environ['HOST_HOSTNAME'])
 
     sim_out = subprocess.run(command_arr, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     print(sim_out.stdout)
