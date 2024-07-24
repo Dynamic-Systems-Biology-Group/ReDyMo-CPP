@@ -163,12 +163,16 @@ def objective(trial):
         log.info("Calculating metrics for each chromosome (parallel)")
         training_mse, training_smape, training_mae = calculate_errors(params, params['training_chromosomes_set'])
         validation_mse, validation_smape, validation_mae = calculate_errors(params, params['validation_chromosomes_set'])
+        test_mse, test_smape, test_mae = calculate_errors(params, params['test_chromosomes_set'])
         trial.set_user_attr('training_mse', training_mse)
-        trial.set_user_attr('validation_mse', validation_mse)
         trial.set_user_attr('training_smape', training_smape)
-        trial.set_user_attr('validation_smape', validation_smape)
         trial.set_user_attr('training_mae', training_mae)
+        trial.set_user_attr('validation_mse', validation_mse)
+        trial.set_user_attr('validation_smape', validation_smape)
         trial.set_user_attr('validation_mae', validation_mae)
+        trial.set_user_attr('test_mse', test_mse)
+        trial.set_user_attr('test_smape', test_smape)
+        trial.set_user_attr('test_mae', test_mae)
 
 
     except Exception as e:
@@ -201,7 +205,7 @@ log.info(f"Validation chromosomes: {np.sort(VALIDATION_CHROMOSOMES_SET)}")
 log.info(f"Test chromosomes:       {np.sort(TEST_CHROMOSOMES_SET)}")
 
 OPTUNA_BACKEND_URL = os.environ['OPTUNA_BACKEND_URL']
-study = optuna.create_study(directions=['minimize', 'minimize', 'minimize'], study_name='redymo-tcruzi-with-chipseq-multi-objective', storage=OPTUNA_BACKEND_URL,
+study = optuna.create_study(directions=['minimize', 'minimize', 'minimize'], study_name='redymo-tcruzi-with-random-chipseq-multi-objective', storage=OPTUNA_BACKEND_URL,
                             load_if_exists=True)
 
 study.optimize(objective, n_trials=4000)
